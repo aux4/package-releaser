@@ -1,0 +1,145 @@
+{
+  "scope": "aux4",
+  "name": "package-releaser",
+  "version": "0.0.5",
+  "description": "Package release utility",
+  "dependencies": [
+    "aux4/aux4"
+  ],
+  "system": [
+    [
+      "test:semver",
+      "npm:semver"
+    ],
+    [
+      "test:jq --version",
+      "brew:jq"
+    ],
+    [
+      "test:gh --version",
+      "brew:gh"
+    ],
+    [
+      "test:op --version",
+      "brew:1password-cli"
+    ]
+  ],
+  "tags": [
+    "aux4",
+    "package"
+  ],
+  "profiles": [
+    {
+      "name": "aux4",
+      "commands": [
+        {
+          "name": "releaser",
+          "execute": [
+            "profile:aux4:releaser"
+          ],
+          "help": {
+            "text": "Package release utility"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aux4:releaser",
+      "commands": [
+        {
+          "name": "get-version",
+          "execute": [
+            "cat ${dir}/.aux4 | jq -r .version"
+          ],
+          "help": {
+            "text": "Get the version of the .aux4 package",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              }
+            ]
+          }
+        },
+        {
+          "name": "increment-version",
+          "execute": [
+            "set:currentVersion=!cat ${dir}/.aux4 | jq -r .version",
+            "confirm:Are you sure you want to release a new version?",
+            "semver -i ${level} ${currentVersion}",
+            "set:version=${response}",
+            "log:releasing version $version",
+            "jq '.version = \"${version}\"' ${dir}/.aux4 > ${dir}/.aux4.tmp",
+            "mv ${dir}/.aux4.tmp ${dir}/.aux4"
+          ],
+          "help": {
+            "text": "Increment the version of the .aux4 package",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              },
+              {
+                "name": "level",
+                "text": "the level of the release",
+                "options": [
+                  "patch",
+                  "minor",
+                  "major"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "tag",
+          "execute": [
+            "set:version=!cat ${dir}/.aux4 | jq -r .version",
+            "git commit -am 'release: $version'",
+            "log:create git tag",
+            "git tag -a v${version} -m 'release: v${version}'",
+            "git push --follow-tags",
+            "log:create git release",
+            "gh release create v${version} package/${package}_${version}.zip"
+          ],
+          "help": {
+            "text": "Create a git tag and a github release",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              },
+              {
+                "name": "package",
+                "text": "The name of the package <scope>_<name>."
+              }
+            ]
+          }
+        },
+        {
+          "name": "aux4-login",
+          "execute": [
+            "set:user=!op read op://${secret}/username;password=!op read op://${secret}/password",
+            "nout:op read 'op://${secret}/otp?attribute=otp'",
+            "set:otp=${response}",
+            "log:login to the aux4 hub ${user}",
+            "aux4 aux4 login --email ${user} --password ${password} --otp ${otp}"
+          ],
+          "help": {
+            "text": "Login to the aux4 hub using 1Password secret",
+            "variables": [
+              {
+                "name": "secret",
+                "text": "The 1Password secret",
+                "default": "aux4/aux4-dev"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
