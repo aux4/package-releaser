@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "package-releaser",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Package release utility",
   "dependencies": [
     "aux4/aux4"
@@ -120,6 +120,50 @@
           }
         },
         {
+          "name": "release",
+          "execute": [
+            "git pull -r",
+            "alias:aux4 aux4 releaser increment-version params(dir, level)",
+            "set:version=!aux4 aux4 releaser get-version params(dir)",
+            "aux4 build",
+            "cd ${dir} && aux4 aux4 pkger build .",
+            "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
+            "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
+            "log:The package ${scope}/${name}:${version} has been released"
+          ],
+          "help": {
+            "text": "Release a new version of the package",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "package"
+              },
+              {
+                "name": "level",
+                "text": "The level of the release",
+                "options": [
+                  "patch",
+                  "minor",
+                  "major"
+                ]
+              },
+              {
+                "name": "scope",
+                "text": "The scope of the package"
+              },
+              {
+                "name": "name",
+                "text": "The name of the package"
+              },
+              {
+                "name": "version",
+                "text": "The version of the package"
+              }
+            ]
+          }
+        },
+        {
           "name": "aux4-login",
           "execute": [
             "set:user=!op read op://${secret}/username;password=!op read op://${secret}/password",
@@ -133,8 +177,7 @@
             "variables": [
               {
                 "name": "secret",
-                "text": "The 1Password secret",
-                "default": "aux4/aux4-dev"
+                "text": "The 1Password secret"
               }
             ]
           }
