@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "package-releaser",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Package release utility",
   "dependencies": [
     "aux4/aux4"
@@ -13,15 +13,18 @@
     ],
     [
       "test:jq --version",
-      "brew:jq"
+      "brew:jq",
+      "apt:jq"
     ],
     [
       "test:gh --version",
-      "brew:gh"
+      "brew:gh",
+      "apt:gh"
     ],
     [
       "test:op --version",
-      "brew:1password-cli"
+      "brew:1password-cli",
+      "apt:1password-cli"
     ]
   ],
   "tags": [
@@ -63,11 +66,33 @@
           }
         },
         {
+          "name": "set-version",
+          "execute": [
+            "jq '.version = \"${version}\"' ${dir}/.aux4 > ${dir}/.aux4.tmp",
+            "mv ${dir}/.aux4.tmp ${dir}/.aux4"
+          ],
+          "help": {
+            "text": "Set the version of the .aux4 package",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              },
+              {
+                "name": "version",
+                "text": "The version of the package",
+                "arg": true
+              }
+            ]
+          }
+        },
+        {
           "name": "increment-version",
           "execute": [
             "set:currentVersion=!cat ${dir}/.aux4 | jq -r .version",
             "confirm:Are you sure you want to release a new version?",
-            "semver -i ${level} ${currentVersion}",
+            "nout:semver -i ${level} ${currentVersion}",
             "set:version=${response}",
             "log:releasing version $version",
             "jq '.version = \"${version}\"' ${dir}/.aux4 > ${dir}/.aux4.tmp",
@@ -84,6 +109,7 @@
               {
                 "name": "level",
                 "text": "the level of the release",
+                "arg": true,
                 "options": [
                   "patch",
                   "minor",
@@ -120,12 +146,43 @@
           }
         },
         {
+          "name": "install",
+          "execute": [
+            "alias:aux4 build",
+            "set:version=!aux4 aux4 releaser get-version params(dir)",
+            "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
+            "cd ${dir} && aux4 aux4 pkger build .",
+            "aux4 aux4 pkger uninstall ${scope}/${name}",
+            "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
+            "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
+            "log:The package ${scope}/${name}:${version}-local has been installed"
+          ],
+          "help": {
+            "text": "Install a local version of the package",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              },
+              {
+                "name": "scope",
+                "text": "The scope of the package"
+              },
+              {
+                "name": "name",
+                "text": "The name of the package"
+              }
+            ]
+          }
+        },
+        {
           "name": "release",
           "execute": [
             "git pull -r",
             "alias:aux4 aux4 releaser increment-version params(dir, level)",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
-            "aux4 build",
+            "alias:aux4 build",
             "cd ${dir} && aux4 aux4 pkger build .",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
             "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
@@ -138,7 +195,7 @@
               {
                 "name": "dir",
                 "text": "The directory of the package",
-                "default": "package"
+                "default": "."
               },
               {
                 "name": "level",
