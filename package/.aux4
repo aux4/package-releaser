@@ -155,6 +155,7 @@
             "aux4 aux4 pkger uninstall ${scope}/${name}",
             "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
             "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
+            "aux4 aux4 releaser set-version params(dir) --version ${version}",
             "log:The package ${scope}/${name}:${version}-local has been installed"
           ],
           "help": {
@@ -186,7 +187,7 @@
             "cd ${dir} && aux4 aux4 pkger build .",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
             "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
-            "rm ${dir}/${scope}_${name}_${version}.zip",
+            "rm -f ${dir}/${scope}_${name}_${version}.zip",
             "log:The package ${scope}/${name}:${version} has been released"
           ],
           "help": {
