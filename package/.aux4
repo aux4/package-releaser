@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "package-releaser",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Package release utility",
   "dependencies": [
     "aux4/aux4"
@@ -148,6 +148,10 @@
         {
           "name": "install",
           "execute": [
+            "json:cat ${dir}/.aux4",
+            "set:aux4=${response}",
+            "set:scope=${aux4.scope}",
+            "set:name=${aux4.name}",
             "alias:aux4 build",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
@@ -165,14 +169,6 @@
                 "name": "dir",
                 "text": "The directory of the package",
                 "default": "."
-              },
-              {
-                "name": "scope",
-                "text": "The scope of the package"
-              },
-              {
-                "name": "name",
-                "text": "The name of the package"
               }
             ]
           }
@@ -181,6 +177,10 @@
           "name": "release",
           "execute": [
             "git pull -r",
+            "json:cat ${dir}/.aux4",
+            "set:aux4=${response}",
+            "set:scope=${aux4.scope}",
+            "set:name=${aux4.name}",
             "alias:aux4 aux4 releaser increment-version params(dir, level)",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "alias:aux4 build",
@@ -206,18 +206,6 @@
                   "minor",
                   "major"
                 ]
-              },
-              {
-                "name": "scope",
-                "text": "The scope of the package"
-              },
-              {
-                "name": "name",
-                "text": "The name of the package"
-              },
-              {
-                "name": "version",
-                "text": "The version of the package"
               }
             ]
           }
