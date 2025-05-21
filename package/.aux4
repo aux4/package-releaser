@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "package-releaser",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "Package release utility",
   "dependencies": [
     "aux4/aux4"
@@ -92,7 +92,7 @@
           "execute": [
             "set:currentVersion=!cat ${dir}/.aux4 | jq -r .version",
             "confirm:Are you sure you want to release a new version?",
-            "nout:semver -i ${level} ${currentVersion}",
+            "semver -i ${level} ${currentVersion}",
             "set:version=${response}",
             "log:releasing version $version",
             "jq '.version = \"${version}\"' ${dir}/.aux4 > ${dir}/.aux4.tmp",
@@ -152,7 +152,7 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
-            "alias:aux4 build",
+            "aux4 build",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
             "cd ${dir} && aux4 aux4 pkger build .",
@@ -187,7 +187,7 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
-            "alias:aux4 aux4 releaser increment-version params(dir, level)",
+            "aux4 aux4 releaser increment-version params(dir, level)",
             "log:next",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "log:building version ${version}",
