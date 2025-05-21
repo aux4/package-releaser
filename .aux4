@@ -1,0 +1,17 @@
+{
+  "profiles": [
+    {
+      "name": "main",
+      "commands": [
+        {
+          "name": "build",
+          "execute": [
+          ],
+          "help": {
+            "text": "Empty build"
+          }
+        }
+      ]
+    }
+  ]
+}

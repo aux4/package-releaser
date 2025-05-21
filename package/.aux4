@@ -189,7 +189,7 @@
             "set:name=${aux4.name}",
             "alias:aux4 aux4 releaser increment-version params(dir, level)",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
-            "alias:aux4 build",
+            "aux4 build",
             "cd ${dir} && aux4 aux4 pkger build .",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
             "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
@@ -230,7 +230,8 @@
             "variables": [
               {
                 "name": "secret",
-                "text": "The 1Password secret"
+                "text": "The 1Password secret",
+                "arg": true
               }
             ]
           }
