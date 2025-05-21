@@ -188,6 +188,7 @@
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
             "alias:aux4 aux4 releaser increment-version params(dir, level)",
+            "log:next",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "log:building version ${version}",
             "aux4 build",
