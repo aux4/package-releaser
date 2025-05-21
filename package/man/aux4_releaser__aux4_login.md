@@ -1,21 +1,15 @@
-### Description
+#### Description
 
-Add a summary of the behavior and describe how the command works (one to three paragraphs). Don't use bullet points for that. But don't need to describe each one of the steps, just the general idea.
+The `aux4-login` command allows users to log in to the aux4 hub using a 1Password secret. It retrieves the username and password from the specified 1Password secret, along with the OTP (One-Time Password) if available, and logs in to the aux4 hub with the provided credentials.
 
-### Usage
-
-Describe the main parameters and options of the command.
+#### Usage
 
 ```bash
-aux4 aux4-login --secret <value>
+aux4 aux4-login --secret <secret>
 ```
 
-### Example
+#### Example
 
 ```bash
-aux4 aux4-login --secret mySuperSecret
-```
-
-```
-example output
+aux4 aux4-login --secret my_1password_secret
 ```
