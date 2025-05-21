@@ -152,7 +152,7 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
-            "aux4 build",
+            "alias:aux4 build",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
             "cd ${dir} && aux4 aux4 pkger build .",
