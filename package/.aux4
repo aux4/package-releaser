@@ -189,9 +189,12 @@
             "set:name=${aux4.name}",
             "alias:aux4 aux4 releaser increment-version params(dir, level)",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
+            "log:building version ${version}",
             "aux4 build",
             "cd ${dir} && aux4 aux4 pkger build .",
+            "log:publishing version ${version}",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
+            "log:tagging version ${version}",
             "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
             "rm -f ${dir}/${scope}_${name}_${version}.zip",
             "log:The package ${scope}/${name}:${version} has been released"
