@@ -152,7 +152,7 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
-            "alias:aux4 build",
+            "aux4 build",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
             "cd ${dir} && aux4 aux4 pkger build .",
@@ -160,7 +160,8 @@
             "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
             "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
             "aux4 aux4 releaser set-version params(dir) --version ${version}",
-            "log:The package ${scope}/${name}:${version}-local has been installed"
+            "log:The package ${scope}/${name}:${version}-local has been installed",
+            "if(rm) && rm -f ${dir}/${scope}_${name}_${version}-local.zip"
           ],
           "help": {
             "text": "Install a local version of the package",
@@ -169,6 +170,11 @@
                 "name": "dir",
                 "text": "The directory of the package",
                 "default": "."
+              },
+              {
+                "name": "rm",
+                "text": "Remove the package file",
+                "default": "false"
               }
             ]
           }
