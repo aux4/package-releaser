@@ -128,7 +128,7 @@
             "git tag -a v${version} -m 'release: v${version}'",
             "git push --follow-tags",
             "log:create git release",
-            "gh release create v${version} package/${package}_${version}.zip"
+            "gh release create v${version} ${dir}/${package}_${version}.zip"
           ],
           "help": {
             "text": "Create a git tag and a github release",

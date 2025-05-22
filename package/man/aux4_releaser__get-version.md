@@ -1,27 +1,25 @@
 #### Description
 
-The `get-version` command is used to retrieve the current version of the application or package that is being managed. It interfaces with the release management system to fetch the version details, ensuring that users can confirm the version they are working with in their deployments or development.
-
-This command is particularly useful for automated scripts and CI/CD pipelines, as it provides a straightforward way to programmatically access version information without needing to manually inspect files or configurations.
+The `get-version` command retrieves the current version number defined in a package’s `.aux4` configuration file. By default, it reads the `.aux4` file in the specified directory and uses `jq` to extract the `version` field, then prints that version string to the console. This provides a simple, programmatic way to confirm the active version of your package, which is especially helpful in scripting and automation workflows.
 
 #### Usage
 
-Describe the main parameters and options of the command.
-
 ```bash
-aux4 get-version
+aux4 aux4 releaser get-version [--dir <directory>]
 ```
+
+--dir  The path to the directory containing the `.aux4` file. Defaults to the current directory (`.`).
 
 #### Example
 
-To fetch the current version of the application, you would run the following command:
+The following example fetches the version from the `.aux4` file in the current directory:
 
 ```bash
-aux4 get-version
+aux4 aux4 releaser get-version --dir .
 ```
 
-This command will output the version string of the current application or package being handled.
+This will output the version string defined in `.aux4`. For instance:
 
 ```text
-1.0.0
+0.0.18
 ```

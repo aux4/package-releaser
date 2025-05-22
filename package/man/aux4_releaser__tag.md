@@ -1,25 +1,28 @@
 #### Description
 
-The `tag` command is designed to facilitate the process of tagging releases within a project. It automates the workflow associated with versioning and helps ensure that releases are properly indexed and easy to manage. When executed, this command integrates seamlessly with your version control system and scripts the necessary steps to apply a tag to the latest commit, providing consistency across your release process.
-
-By invoking this command, users can streamline their release management tasks, allowing them to quickly and effectively apply tags according to specified parameters. This is particularly useful in collaborative environments where multiple team members may be involved in the release process, ensuring that everyone stays aligned with proper versioning practices.
+The `tag` command automates marking a release in your git repository and creating a corresponding GitHub release. It reads the current version from the `.aux4` manifest, commits any outstanding changes with a standardized message, applies a semantic tag to the latest commit, pushes the tags upstream, and publishes a release on GitHub including the packaged zip file of the project.
 
 #### Usage
 
-Describe the main parameters and options of the command.
-
 ```bash
-aux4 tag --<variable> <value> --<variable> <value>
+aux4 aux4 releaser tag [--dir <path>] --package <scope_name>
 ```
+
+--dir      Path to the package directory (default: `.`)
+--package  Name of the package artifact, formatted as `<scope>_<name>`
 
 #### Example
 
 ```bash
-aux4 tag --version v1.0 --message "Initial release"
+aux4 aux4 releaser tag --package aux4_package-releaser
 ```
 
-This command applies a tag `v1.0` to the latest commit with the message "Initial release". It organizes the project's history by marking the release point in time, making it easy to reference and roll back if necessary.
+This runs the tag command in the current directory (default), reads the version field from `.aux4` (e.g., `0.0.18`), commits with `release: 0.0.18`, creates and pushes the git tag `v0.0.18`, and then uses `gh` to publish a GitHub release `v0.0.18`, attaching the `aux4_package-releaser_0.0.18.zip` file.
 
 ```text
-Tag 'v1.0' applied with message: Initial release
+[master 1a2b3c4] release: 0.0.18
+ 1 file changed, 1 insertion(+)
+create git tag
+Tagged v0.0.18
+Creating GitHub release v0.0.18...
 ```

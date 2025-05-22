@@ -1,31 +1,30 @@
 #### Description
 
-The `release` command in the aux4:releaser profile facilitates the process of preparing and deploying releases for a project or package. This command typically involves tasks such as version bumping, building artifacts, and possibly publishing them to a package registry. The command streamlines the release workflow, allowing developers to automate repetitive tasks involved in the release process.
-
-When executed, the `release` command may accept various parameters that help customize the behavior of the release such as specifying the version number, the type of release (like patch, minor, or major), and additional flags that dictate the exact steps taken. By providing a clear structure and automated sequencing, this command enhances efficiency and minimizes errors associated with manual release processes.
+The `release` command automates the entire process of publishing a new version of your package. It starts by pulling the latest changes from the repository, then reads the current version from the package metadata and increments it according to the specified semver level. After updating the version, it builds and packages the project, publishes the artifact to the package registry, and finally creates a corresponding git tag and GitHub release. Upon completion, local build files are cleaned up and a confirmation message indicates that the release was successful.
 
 #### Usage
 
-Describe the main parameters and options of the command.
-
 ```bash
-aux4 release --<variable> <value> --<variable> <value>
+aux4 aux4 releaser release --dir <path> --level <patch|minor|major>
 ```
+
+--dir   Specifies the directory of the package (default: current directory).
+--level Defines the semantic version increment level: patch, minor, or major.
 
 #### Example
 
-To execute a release with a specific version and other options, you would run:
+This example releases a new minor version of the package from the current directory:
 
 ```bash
-aux4 release --version 1.2.0 --release-type minor
+aux4 aux4 releaser release --level minor
 ```
 
-In this example, the command initiates the release process for version 1.2.0 as a minor release. The expected output would confirm the details of the release and include any generated artifacts.
+It will pull the latest commits, bump the version (for instance from `1.2.3` to `1.3.0`), rebuild and publish the package, tag and release on GitHub, then remove temporary artifacts.
 
 ```text
-Releasing version 1.2.0 as a minor update.
-- Bumping version to 1.2.0
-- Creating build artifacts...
-- Publishing to the registry...
-Release complete!
+next
+building version 1.3.0
+publishing version 1.3.0
+tagging version 1.3.0
+The package aux4_package-releaser:1.3.0 has been released
 ```
