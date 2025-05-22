@@ -1,27 +1,26 @@
 #### Description
 
-The `aux4-login` command allows users to authenticate and gain access to the aux4 system. It facilitates the login process by validating user credentials and establishing a session. Once invoked, it prompts the necessary user input and verifies that the credentials align with the system's records to ensure secure access.
-
-This command is essential for enabling users to interact with the features provided by the aux4 framework, maintaining security while providing a smooth user experience during the login process.
+The `aux4-login` command automates authentication to the aux4 hub by retrieving stored credentials from a 1Password secret. It fetches the username and password fields, generates a one-time password (OTP), and then executes the aux4 login process in a single invocation. This eliminates manual entry of sensitive information and ensures secure, repeatable logins.
 
 #### Usage
 
-Describe the main parameters and options of the command.
-
 ```bash
-aux4 aux4-login --<variable> <value> --<variable> <value>
+aux4 aux4 releaser aux4-login --secret <secret>
 ```
+
+Where:
+
+`--secret <secret>`  The 1Password secret path containing the `username`, `password`, and `otp` attributes required for login.
 
 #### Example
 
-Using the `aux4-login` command, a user can log into the system as follows:
-
 ```bash
-aux4 aux4-login --username user123 --password pass123
+aux4 aux4 releaser aux4-login --secret "op://MyVault/Aux4Hub"
 ```
 
-In this example, the command attempts to log in the user with the username "user123" and the password "pass123". If the credentials are correct, the output would confirm successful authentication.
+This command reads the `username`, `password`, and `otp` values from the 1Password item at `op://MyVault/Aux4Hub` and logs in to the aux4 hub as the retrieved user:
 
 ```text
-Login successful! Welcome, user123.
+login to the aux4 hub alice@example.com
+You are now logged in to aux4 hub.
 ```

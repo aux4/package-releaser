@@ -124,11 +124,11 @@
           "execute": [
             "set:version=!cat ${dir}/.aux4 | jq -r .version",
             "git commit -am 'release: $version'",
-            "log:create git tag",
+            "log:create git tag v${version}",
             "git tag -a v${version} -m 'release: v${version}'",
             "git push --follow-tags",
-            "log:create git release",
-            "gh release create v${version} ${dir}/${package}_${version}.zip"
+            "log:create git release v${version}",
+            "gh release create v${version} ${dir}/${scope}_${name}_${version}.zip"
           ],
           "help": {
             "text": "Create a git tag and a github release",
@@ -139,8 +139,12 @@
                 "default": "."
               },
               {
-                "name": "package",
-                "text": "The name of the package <scope>_<name>."
+                "name": "scope",
+                "text": "The scope of the package"
+              },
+              {
+                "name": "name",
+                "text": "The name of the package"
               }
             ]
           }
@@ -196,7 +200,7 @@
             "log:publishing version ${version}",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
             "log:tagging version ${version}",
-            "aux4 aux4 releaser tag params(dir) --package ${scope}_${name}",
+            "aux4 aux4 releaser tag params(dir, scope, name)",
             "rm -f ${dir}/${scope}_${name}_${version}.zip",
             "log:The package ${scope}/${name}:${version} has been released"
           ],
