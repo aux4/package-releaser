@@ -3,6 +3,7 @@
   "name": "package-releaser",
   "version": "0.0.20",
   "description": "Package release utility",
+  "license": "Apache-2.0",
   "dependencies": [
     "aux4/aux4"
   ],
