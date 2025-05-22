@@ -1,26 +1,28 @@
 #### Description
 
-The `install` command in the `aux4:releaser` profile is used to install a local version of the package. It reads the `.aux4` file, retrieves the necessary information, builds the package, installs it locally, and updates the version accordingly. By executing this command, users can easily install a local version of the package for testing or development purposes.
+The `install` command is designed to facilitate the installation of auxiliary packages from the aux4 hub. It handles fetching the specified package based on the provided scope, name, and version, ensuring that the correct dependencies are met and set up appropriately for use in a project. The command takes user-defined parameters that allow for customization of the installation process and offers a streamlined experience for managing packages.
+
+Using the `install` command enables users to leverage powerful tools and libraries seamlessly within their workflow. It integrates with the dynamic CLI developed by the aux4 package, allowing for efficient package management without the need for manual installation processes.
 
 #### Usage
 
-```bash
-aux4 install --dir <directory_path> --rm <true_or_false>
-```
+Describe the main parameters and options of the command.
 
-- `dir`: The directory of the package. (Default: current directory `.`)
-- `rm`: Remove the package file after installation. (Default: false)
+```bash
+aux4 install <scope>/<name>:<version>
+```
 
 #### Example
 
-Installing a local version of the package in the current directory without removing the package file:
+An example of how to use the `install` command is as follows:
 
 ```bash
-aux4 install
+aux4 install myscope/mypackage:1.0.0
 ```
 
-This command will install the local version of the package in the current directory without deleting the package file.
+This command will initiate the installation of the package `mypackage` version `1.0.0` under the scope `myscope`. The output will confirm the successful installation of the package and its dependencies.
 
-```
-The package aux4/package-releaser:version-local has been installed
+```text
+Installing myscope/mypackage:1.0.0...
+Installation successful!
 ```

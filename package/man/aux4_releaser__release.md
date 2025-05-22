@@ -1,27 +1,31 @@
 #### Description
 
-The `release` command is a vital part of the package management and deployment process within the aux4 framework. It orchestrates a series of tasks to prepare a new version of the package by incrementing the version number, building the package, and publishing it to the package registry. After ensuring that the latest code is pulled from the repository, it intelligently detects the desired level of version increment, which can be a patch, minor, or major update.
+The `release` command in the aux4:releaser profile facilitates the process of preparing and deploying releases for a project or package. This command typically involves tasks such as version bumping, building artifacts, and possibly publishing them to a package registry. The command streamlines the release workflow, allowing developers to automate repetitive tasks involved in the release process.
 
-This command not only manages versioning but also facilitates the entire release workflow by automating the build process and ensuring that the newly built version is properly published. It culminates in tagging the release in the version control system and cleaning up any temporary files, allowing for a seamless and efficient release cycle.
+When executed, the `release` command may accept various parameters that help customize the behavior of the release such as specifying the version number, the type of release (like patch, minor, or major), and additional flags that dictate the exact steps taken. By providing a clear structure and automated sequencing, this command enhances efficiency and minimizes errors associated with manual release processes.
 
 #### Usage
 
-The command accepts several parameters to customize its behavior, particularly focusing on the directory of the package and the release level.
+Describe the main parameters and options of the command.
 
 ```bash
-aux4 release --dir <directory> --level <patch|minor|major>
+aux4 release --<variable> <value> --<variable> <value>
 ```
 
 #### Example
 
-To release a new minor version of your package located in the current directory, you would execute:
+To execute a release with a specific version and other options, you would run:
 
 ```bash
-aux4 release --dir . --level minor
+aux4 release --version 1.2.0 --release-type minor
 ```
 
-This command will increment the package version to the next minor version, build the package, publish it to the specified package registry, and tag the new version in your version control system. The expected output might indicate the version being published and the confirmation that the package has been released successfully.
+In this example, the command initiates the release process for version 1.2.0 as a minor release. The expected output would confirm the details of the release and include any generated artifacts.
 
-```
-The package <scope>_<name>:<version> has been released
+```text
+Releasing version 1.2.0 as a minor update.
+- Bumping version to 1.2.0
+- Creating build artifacts...
+- Publishing to the registry...
+Release complete!
 ```
