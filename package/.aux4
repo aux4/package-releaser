@@ -157,11 +157,11 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
-            "aux4 build",
+            "if(noBuild==false) && aux4 build || true",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
             "cd ${dir} && aux4 aux4 pkger build .",
-            "aux4 aux4 pkger uninstall ${scope}/${name}",
+            "aux4 aux4 pkger list --filter ${scope}/${name} && aux4 aux4 pkger uninstall ${scope}/${name} || true",
             "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
             "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
             "aux4 aux4 releaser set-version params(dir) --version ${version}",
@@ -180,6 +180,11 @@
                 "name": "rm",
                 "text": "Remove the package file",
                 "default": "false"
+              },
+              {
+                "name": "noBuild",
+                "text": "Skip the build step",
+                "default": "false"
               }
             ]
           }
@@ -196,7 +201,7 @@
             "log:next",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "log:building version ${version}",
-            "aux4 build",
+            "if(noBuild==false) && aux4 build || true",
             "cd ${dir} && aux4 aux4 pkger build .",
             "log:publishing version ${version}",
             "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
@@ -212,6 +217,11 @@
                 "name": "dir",
                 "text": "The directory of the package",
                 "default": "."
+              },
+              {
+                "name": "noBuild",
+                "text": "Skip the build step",
+                "default": "false"
               },
               {
                 "name": "level",
