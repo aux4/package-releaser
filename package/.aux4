@@ -160,7 +160,7 @@
             "if(noBuild==false) && aux4 build || true",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
-            "cd ${dir} && aux4 aux4 pkger build .",
+            "cd ${dir} && aux4 aux4 pkger build . --currentPlatform true",
             "aux4 aux4 pkger list --filter ${scope}/${name} && aux4 aux4 pkger uninstall ${scope}/${name} || true",
             "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
             "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
