@@ -162,7 +162,7 @@
             "aux4 aux4 releaser set-version params(dir) --version ${version}-local",
             "cd ${dir} && aux4 aux4 pkger build . --currentPlatform true",
             "aux4 aux4 pkger list --filter ${scope}/${name} && aux4 aux4 pkger uninstall ${scope}/${name} || true",
-            "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip",
+            "aux4 aux4 pkger install --fromFile ${dir}/${scope}_${name}_${version}-local.zip params(force)",
             "rm -f ${dir}/${scope}_${name}_${version}-local.zip",
             "aux4 aux4 releaser set-version params(dir) --version ${version}",
             "log:The package ${scope}/${name}:${version}-local has been installed",
@@ -185,6 +185,11 @@
                 "name": "noBuild",
                 "text": "Skip the build step",
                 "default": "false"
+              },
+              {
+                "name": "force",
+                "text": "Force the install via pkger --force, overriding the current version and ignoring dependents (needed to reinstall a package other packages depend on)",
+                "default": ""
               }
             ]
           }

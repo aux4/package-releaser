@@ -46,13 +46,16 @@ aux4 aux4 releaser release --level <patch|minor|major> [--dir <directory>]
 Build and install a local version of a package for testing. Appends `-local` to the version, builds a zip archive, and installs it.
 
 ```bash
-aux4 aux4 releaser install [--dir <path>] [--rm <true|false>]
+aux4 aux4 releaser install [--dir <path>] [--rm <true|false>] [--force <true|false>]
 ```
 
 | Flag | Description | Default |
 |------|-------------|---------|
 | `--dir` | Path to the package directory | `.` |
 | `--rm` | Remove the zip file after installation | `false` |
+| `--force` | Force the install via pkger `--force`, overriding the current version and ignoring dependents. Needed to reinstall a package other packages depend on | *(omitted)* |
+
+**Note:** When other installed packages depend on the one you are reinstalling, pkger refuses the plain install. Use `--force true` to override the current version and ignore dependents so the local build takes effect.
 
 ### tag
 
