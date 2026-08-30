@@ -202,6 +202,10 @@
             "set:aux4=${response}",
             "set:scope=${aux4.scope}",
             "set:name=${aux4.name}",
+            "set:repoFlag=",
+            "when:${aux4.private}==true:set:repoFlag=--repository private",
+            "set:repoField=nvl(aux4.repository, '')",
+            "when:${repoField}:set:repoFlag=--repository ${repoField}",
             "aux4 aux4 releaser increment-version params(dir, level)",
             "log:next",
             "set:version=!aux4 aux4 releaser get-version params(dir)",
@@ -209,7 +213,7 @@
             "if(noBuild==false) && aux4 build || true",
             "cd ${dir} && aux4 aux4 pkger build .",
             "log:publishing version ${version}",
-            "aux4 aux4 pkger publish ${dir}/${scope}_${name}_${version}.zip",
+            "aux4 aux4 pkger publish ${repoFlag} ${dir}/${scope}_${name}_${version}.zip",
             "log:tagging version ${version}",
             "aux4 aux4 releaser tag params(dir, scope, name)",
             "rm -f ${dir}/${scope}_${name}_${version}.zip",
@@ -236,6 +240,42 @@
                   "minor",
                   "major"
                 ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "dev-publish",
+          "execute": [
+            "json:cat ${dir}/.aux4",
+            "set:aux4=${response}",
+            "set:scope=${aux4.scope}",
+            "set:name=${aux4.name}",
+            "set:version=${aux4.version}",
+            "set:repoFlag=",
+            "when:${aux4.private}==true:set:repoFlag=--repository private",
+            "set:repoField=nvl(aux4.repository, '')",
+            "when:${repoField}:set:repoFlag=--repository ${repoField}",
+            "log:building version ${version}",
+            "if(noBuild==false) && aux4 build || true",
+            "cd ${dir} && aux4 aux4 pkger build .",
+            "log:publishing version ${version} ${repoFlag}",
+            "aux4 aux4 pkger publish ${repoFlag} ${dir}/${scope}_${name}_${version}.zip",
+            "rm -f ${dir}/${scope}_${name}_${version}.zip",
+            "log:The package ${scope}/${name}:${version} has been published (no git, no version bump)"
+          ],
+          "help": {
+            "text": "Build and publish the package's current version to the hub with no git tag/commit/push and no version bump. Honors the .repository field (falling back to .private). Intended for dev-hub publishing where a full git release is not wanted.",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "The directory of the package",
+                "default": "."
+              },
+              {
+                "name": "noBuild",
+                "text": "Skip the build step",
+                "default": "false"
               }
             ]
           }

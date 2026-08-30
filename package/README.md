@@ -27,6 +27,7 @@ aux4 aux4 releaser install --dir ./my-package
 | Command | Description |
 |---------|-------------|
 | `aux4 aux4 releaser release` | Full release cycle: bump version, build, publish, tag |
+| `aux4 aux4 releaser dev-publish` | Build and publish the current version with no Git operations or version bump |
 | `aux4 aux4 releaser install` | Build and install a local version for testing |
 | `aux4 aux4 releaser tag` | Create a Git tag and GitHub release |
 | `aux4 aux4 releaser get-version` | Print the current package version |
@@ -39,6 +40,16 @@ Run a full release cycle: pull latest changes, increment the version, build and 
 
 ```bash
 aux4 aux4 releaser release --level <patch|minor|major> [--dir <directory>]
+```
+
+The publish step routes the package to the correct repository: a `repository` field in the package `.aux4` (for example `"repository": "system"`) publishes there; otherwise a `"private": true` package publishes to the `private` repository; otherwise it publishes to the default `public` repository.
+
+### dev-publish
+
+Build and publish the package's current version to the hub with no Git operations (no pull, bump, commit, tag, or push). Honors the same `repository`/`private` routing as `release`. Point it at a specific hub with the `AUX4_REGISTRY_URL` environment variable. Useful for seeding a development hub while a working tree still has uncommitted changes.
+
+```bash
+aux4 aux4 releaser dev-publish [--dir <directory>] [--noBuild <true|false>]
 ```
 
 ### install

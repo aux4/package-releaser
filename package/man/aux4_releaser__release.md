@@ -2,6 +2,8 @@
 
 The `release` command orchestrates a full release cycle for your package by pulling the latest changes, incrementing the version, building and publishing the artifact, and creating a Git tag and GitHub release. It encapsulates the entire workflow into a single command to ensure consistent and repeatable releases without manual intervention.
 
+The publish step routes the package to the correct repository: if the package `.aux4` declares a `repository` field (for example `"repository": "system"`) it publishes there; otherwise a package marked `"private": true` publishes to the `private` repository; otherwise it publishes to the default `public` repository. To publish the current version without any Git operations or a version bump (for example to seed a development hub), use `dev-publish` instead.
+
 #### Usage
 
 ```bash
